@@ -38,9 +38,8 @@ endif()
 target_link_libraries(MediaProcessor PRIVATE
     Threads::Threads
     ${SNDFILE_LIBRARIES}
-    ${DF_LIBRARY}
+    ${CMAKE_SOURCE_DIR}/lib/libdf.so
     nlohmann_json::nlohmann_json
-
 )
 
 # Some of this was for macOS try to remove if possible
