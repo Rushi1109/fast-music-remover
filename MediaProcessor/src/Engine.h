@@ -52,22 +52,22 @@ class Engine {
     MediaType getMediaType() const;
 
     /**
-     * @brief Checks if the provided stream is valid video stream and not static media (i.e. cover image)
+     * @brief Checks if the streams contains valid video stream and not static media (i.e. cover image)
      * 
-     * @param stream json data of stream
+     * @param streamData json data of all the streams
      *
      * @return True if the stream is valid video stream. False otherwise.
      */
-    bool hasValidVideoStream(const nlohmann::json& stream) const;
+    bool hasValidVideoStream(const nlohmann::json& streamData) const;
 
     /**
-     * @brief Checks if the provided stream is valid audio stream
+     * @brief Checks if the streams contains valid audio stream
      * 
-     * @param stream json data of stream
+     * @param streamData json data of all the streams
      *
      * @return True if the stream is valid. False otherwise.
      */
-    bool hasValidAudioStream(const nlohmann::json& stream) const;
+    bool hasValidAudioStream(const nlohmann::json& streamData) const;
 
     /**
      * @brief Checks if the stream's avg_frame_rate is 0/0

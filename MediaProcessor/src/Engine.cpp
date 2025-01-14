@@ -74,39 +74,39 @@ MediaType Engine::getMediaType() const {
 
     nlohmann::json streamData = nlohmann::json::parse(*output);
 
-    bool containsAudioStream;
-    for (const auto& stream : streamData["streams"]) {
-        if (hasValidVideoStream(stream)) {
-            return MediaType::Video;
-        } 
-        if (hasValidAudioStream(stream)) {
-            containsAudioStream = true;
-        }
-    }
-
-    if (containsAudioStream) {
+    if (hasValidVideoStream(streamData)) {
+        return MediaType::Video;
+    } 
+    
+    if (hasValidAudioStream(streamData)) {
         return MediaType::Audio;
     }
-
     return MediaType::Unsupported;
 }
 
-bool Engine::hasValidVideoStream(const nlohmann::json& stream) const {
-    if (stream["codec_type"] != "video") {
-        return false;
-    }
-    if(!stream.contains("avg_frame_rate")) {
-        return false;
-    }
-    if (hasZeroFrameRate(stream["avg_frame_rate"])) {
-        return false;
-    }
+bool Engine::hasValidVideoStream(const nlohmann::json& streamData) const {
+    for (const auto& stream : streamData["streams"]) {
+        if (stream["codec_type"] != "video") {
+            continue;
+        }
+        if(!stream.contains("avg_frame_rate")) {
+            continue;
+        }
 
-    return true;
+        if (!hasZeroFrameRate(stream["avg_frame_rate"])) {
+            return true;
+        }
+    }
+    return false;
 }
 
-bool Engine::hasValidAudioStream(const nlohmann::json& stream) const {
-    return (stream["codec_type"] == "audio");
+bool Engine::hasValidAudioStream(const nlohmann::json& streamData) const {
+    for (const auto& stream : streamData["streams"]) {
+        if (stream["codec_type"] == "audio") {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Engine::hasZeroFrameRate(const std::string& frameRate) const {
