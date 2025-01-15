@@ -52,18 +52,17 @@ class Engine {
     MediaType getMediaType() const;
 
     /**
-     * @brief Checks if the streams contains valid video stream and not static media (i.e. cover image)
-     * 
-     * @param streamData json data of all the streams
+     * @brief Checks if the streams contains a valid video stream.
+     * A valid video stream is one that has an actual duration and is not static media (e.g., a cover image).
      *
      * @return True if the stream is valid video stream. False otherwise.
      */
     bool hasValidVideoStream(const nlohmann::json& streamData) const;
 
+    bool isValidVideoStream(const nlohmann::json& stream) const;
+
     /**
-     * @brief Checks if the streams contains valid audio stream
-     * 
-     * @param streamData json data of all the streams
+     * @brief Checks if the streams contains a valid audio stream
      *
      * @return True if the stream is valid. False otherwise.
      */
@@ -71,8 +70,6 @@ class Engine {
 
     /**
      * @brief Checks if the stream's avg_frame_rate is 0/0
-     * 
-     * @param frameRate the avg_frame_rate field from stream
      *
      * @return True if avg_frame_rate equals to 0/0. False otherwise.
      */

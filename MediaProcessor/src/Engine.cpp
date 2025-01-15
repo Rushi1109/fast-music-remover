@@ -86,18 +86,26 @@ MediaType Engine::getMediaType() const {
 
 bool Engine::hasValidVideoStream(const nlohmann::json& streamData) const {
     for (const auto& stream : streamData["streams"]) {
-        if (stream["codec_type"] != "video") {
-            continue;
-        }
-        if(!stream.contains("avg_frame_rate")) {
-            continue;
-        }
-
-        if (!hasZeroFrameRate(stream["avg_frame_rate"])) {
+        if(isValidVideoStream(stream)) {
             return true;
         }
     }
     return false;
+}
+
+bool Engine::isValidVideoStream(const nlohmann::json& stream) const {
+    if (stream["codec_type"] != "video") {
+        return false;
+    }
+    if(!stream.contains("avg_frame_rate")) {
+        return false;
+    }
+
+    if (hasZeroFrameRate(stream["avg_frame_rate"])) {
+        return false;
+    }
+
+    return true;
 }
 
 bool Engine::hasValidAudioStream(const nlohmann::json& streamData) const {
